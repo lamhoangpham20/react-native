@@ -88,7 +88,7 @@ export default class MainView extends React.Component {
       <ScrollView style={{ flex: 2}}>
        
     {this.loop()}
-      {this.loop()}
+     
     </ScrollView>
       </View>
     )

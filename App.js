@@ -18,8 +18,10 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user:'',
-      product: null
+      user:null,
+      token: null,
+      product: null,
+      userLoggedin: false
     };
   }
   
@@ -51,10 +53,12 @@ export default class App extends Component {
       
       console.log(uri)
   }
-  userLogin = (user)=>
+  userLogin = (user, token)=>
   {
+    console.log(token);
     console.log(user);
-    this.setState({user:user});
+    this.setState({user:user, token:token});
+  
     console.log(this.state.user);
   }
   render() {
@@ -71,12 +75,20 @@ export default class App extends Component {
           />
           <Tab.Screen
             name="Post product"
-            component={SecondaryView}
             options={{
               tabBarIcon: ({ color, size }) => (
                 <Ionicons name="ios-paper" color={color} size={size} />)
-            }}
-          />
+            }}>
+            { props => <SecondaryView
+              {...props}
+              apiURI = 'http://ec2-35-173-124-147.compute-1.amazonaws.com'
+              userLogin = {this.userLogin}
+              successScreen="postProduct"
+              token={this.state.token}
+              user = {this.state.user}
+            />}
+
+            </Tab.Screen>
 
           <Tab.Screen
             name="My Post"
@@ -85,10 +97,14 @@ export default class App extends Component {
                 <Ionicons name="ios-list" color={color} size={size} />)
             }}
           >
-            { props => <Auth
+            { props => <ThirdView
                           {...props}
-                          apiURI = 'http://10.4.0.6:4000'
+                          apiURI = 'http://ec2-35-173-124-147.compute-1.amazonaws.com'
                           userLogin = {this.userLogin}
+                          successScreen="productManagement"
+                          token={this.state.token}
+                          user = {this.state.user}
+                          products = {this.state.products}
                         />}
             </Tab.Screen>
 

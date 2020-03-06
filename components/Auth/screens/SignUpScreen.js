@@ -7,15 +7,17 @@ const SignUpScreen = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   function signupPressed()
   {
-    fetch(props.apiURI + '/registerBasic', {
+    fetch(props.apiURI + '/users', {
         method: 'POST',
         body: JSON.stringify({
           username: username,
           email: email,
-          password: password
+          password: password,
+          phoneNumber:phoneNumber
         }),
         headers: {
           "Content-type": "application/json; charset=UTF-8"
@@ -61,8 +63,16 @@ const SignUpScreen = (props) => {
       <TextInput
         style={ styles.input }
         value={ password }
+        type="password"
         placeholder="password"
         onChangeText={ value => setPassword(value)}
+      />
+      <Text>Please enter your phoneNumber</Text>
+      <TextInput
+        style={ styles.input }
+        value={ phoneNumber }
+        placeholder="phoneNumber"
+        onChangeText={ value => setPhoneNumber(value)}
       />
       <TouchableHighlight onPress={ () => signupPressed() }>
         <View style={ styles.primaryButton }>
