@@ -1,13 +1,20 @@
 import React from 'react'
 import { View, Text } from 'react-native'
-
-const SecondaryView = () => {
-  
+import Auth from '../Auth/Auth'
+import AddPost from '../Auth/screens/AddPost'
+const SecondaryView = (props) => {
+  if(props.token === null)
+  {
+      console.log('hello');
+      return( <Auth apiURI = {props.apiURI}
+      userLogin = {props.userLogin}
+      successScreen={props.successScreen}></Auth>)
+  }
+  else{
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text style={{ fontSize: 50, fontWeight: '700' }}>Secondary View</Text>
-    </View>
+    <AddPost user={props.user} token={props.token} apiURI = {props.apiURI}></AddPost>
   )
+  }
 }
 
 export default SecondaryView
