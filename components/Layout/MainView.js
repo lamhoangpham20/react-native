@@ -146,8 +146,8 @@ export default class MainView extends React.Component {
   handleSearch(event) {
     const search = event.nativeEvent.text;
     const filteredProducts = this.state.dataSource.filter(i => {
-      return (typeof i.Title === 'string') &&
-              i.Title.includes(search) 
+      return (typeof i.Title || i.Location || i.Category === 'string') &&
+              i.Title.includes(search) || i.Location.includes(search) || i.Category.includes(search)
     });
     this.setState({
       search, viewSource:filteredProducts
