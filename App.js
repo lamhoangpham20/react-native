@@ -42,12 +42,10 @@ export default class App extends Component {
         
       })
       .then(json => {
-        console.log("Todos GET successful")
-        console.log("Received following JSON");
-        //console.log(json);
+        console.log("product in app")
 
         this.setState({ products : json.products });
-        console.log(json.products)
+        //console.log(this.state.products);
       })
       .catch(error => {
         console.log("Error message:")
@@ -56,6 +54,29 @@ export default class App extends Component {
       
       console.log(uri)
       console.log(this.state.products);
+  }
+  updateData = ()=>{
+    fetch('http://ec2-35-173-124-147.compute-1.amazonaws.com/products', {
+      method: 'GET',
+    })
+      .then(response => {
+        if (response.ok == false) {
+          throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.json()));
+        }
+        //console.log(response);
+        return response.json();
+        
+      })
+      .then(json => {
+        console.log("product in app")
+
+        this.setState({ products : json.products });
+        //console.log(this.state.products);
+      })
+      .catch(error => {
+        console.log("Error message:")
+        console.log(error.message)
+      });
   }
   userLogin = (user, token)=>
   {
@@ -94,6 +115,7 @@ export default class App extends Component {
               successScreen="postProduct"
               token={this.state.token}
               user = {this.state.user}
+              updateData = {this.updateData}
             />}
 
             </Tab.Screen>
@@ -113,6 +135,7 @@ export default class App extends Component {
                           token={this.state.token}
                           user = {this.state.user}
                           products = {this.state.products}
+                          updateData = {this.updateData}
                         />}
             </Tab.Screen>
 

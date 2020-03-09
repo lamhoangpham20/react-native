@@ -78,7 +78,7 @@ export default class AuthDemo extends Component {
           }
           return response.json();
         }).then(json => {
-          this.setState({ user: json.user});
+          this.setState({ user: json.user });
           this.props.userLogin(json.user, this.state.activeJWT);
         }).catch(error => {
           console.log("Error message:")
@@ -117,14 +117,24 @@ export default class AuthDemo extends Component {
     );
 
     const app = (
-      <Stack.Screen
-        name="ModifyPost"
-        options={{
-          headerShown: false,
-        }}
-      >
-        {props => <ModifyPost {...props} user={this.state.user} token= {this.state.activeJWT} products={this.props.products}></ModifyPost>}
-      </Stack.Screen>
+      <>
+        <Stack.Screen
+          name="Management"
+          options={{
+            headerShown: false,
+          }}
+        >
+          {props => <ModifyPost {...props} updateData = {props.updateData} user={this.state.user} token={this.state.activeJWT} products={this.props.products}></ModifyPost>}
+        </Stack.Screen>
+        <Stack.Screen
+          name="Update"
+          options={{
+            headerShown: false,
+          }}
+        >
+          {props => <ModifyScreen {...props} updateData = {props.updateData} user={this.state.user} token={this.state.activeJWT} products={this.props.products}></ModifyScreen>}
+        </Stack.Screen>
+      </>
     )
     const second = (
       <Stack.Screen
@@ -153,7 +163,7 @@ export default class AuthDemo extends Component {
           console.log('JWT Token found, displaying application logged in views, page 3');
           return app;
         }
-        else{
+        else {
           console.log('JWT Token found, displaying application logged in views, page 2');
           return second;
         }
