@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View } from 'react-native'
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer  } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import MainView from './components/Layout/MainView'
 import SecondaryView from './components/Layout/SecondaryView'
@@ -11,8 +11,11 @@ import Auth from './components/Auth/Auth'
 import { Ionicons } from 'react-native-vector-icons';
 import Constants from "expo-constants";
 import * as SecureStore from 'expo-secure-store'
+import Details from './components/Layout/Details';
+import { createStackNavigator} from '@react-navigation/stack'
 
 const { manifest } = Constants;
+const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const uri = `http://${manifest.debuggerHost.split(':').shift()}:4000`;
 export default class App extends Component {
@@ -21,7 +24,7 @@ export default class App extends Component {
     this.state = {
       user:null,
       token: null,
-      product: null,
+      products: null,
       userLoggedin: false
     };
   }
@@ -51,6 +54,7 @@ export default class App extends Component {
       });
       
       console.log(uri)
+      console.log(this.state.products);
   }
   updateData = ()=>{
     fetch('http://ec2-35-173-124-147.compute-1.amazonaws.com/products', {
@@ -90,17 +94,21 @@ export default class App extends Component {
     console.log('bu cu');
   }
   render() {
+    console.log("hello");
+    console.log(this.state.products);
     return (
       <NavigationContainer>
+   
         <Tab.Navigator>
           <Tab.Screen
             name="Products"
-            component={MainView}
             options={{
               tabBarIcon: ({ color, size }) => (
                 <Ionicons name="ios-home" color={color} size={size} />)
-            }}
-          />
+            }}>
+            { props => <MainView {...props} products={this.state.products}/>}
+          </Tab.Screen>
+ 
           <Tab.Screen
             name="Post product"
             options={{
@@ -166,7 +174,6 @@ export default class App extends Component {
           />
         </Tab.Navigator>
       </NavigationContainer>
-      
-    )
+    );
   }
 }
