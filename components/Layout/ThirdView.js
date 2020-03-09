@@ -13,7 +13,7 @@ const ThirdView = (props) => {
   let token = props.token;
   let apiURI = props.apiURI;
   let updateData = props.updateData;
-  //console.log('product', props.products);
+  //  console.log('product', props.products);
   if(props.token === null)
   {
       console.log('hello');

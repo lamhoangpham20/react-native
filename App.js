@@ -10,6 +10,7 @@ import FifthView from './components/Layout/FifthView'
 import Auth from './components/Auth/Auth'
 import { Ionicons } from 'react-native-vector-icons';
 import Constants from "expo-constants";
+import * as SecureStore from 'expo-secure-store'
 
 const { manifest } = Constants;
 const Tab = createBottomTabNavigator();
@@ -82,6 +83,12 @@ export default class App extends Component {
   
     console.log(this.state.user);
   }
+  userLogout = ()=>
+  {
+    this.setState({user:null, token:null});
+    SecureStore.deleteItemAsync('demoApplicationJWT20');
+    console.log('bu cu');
+  }
   render() {
     return (
       <NavigationContainer>
@@ -133,12 +140,22 @@ export default class App extends Component {
 
           <Tab.Screen
             name="Fourth"
-            component={FourthView}
             options={{
               tabBarIcon: ({ color, size }) => (
                 <Ionicons name="ios-person" color={color} size={size} />)
             }}
-          />
+          >
+            { props => <FourthView
+                          {...props}
+                          apiURI = 'http://ec2-35-173-124-147.compute-1.amazonaws.com'
+                          userLogin = {this.userLogin}
+                          successScreen="Profile"
+                          token={this.state.token}
+                          user = {this.state.user}
+                          userLogout = {this.userLogout}
+                          products = {this.state.products}
+                        />}
+          </Tab.Screen>
           <Tab.Screen
             name="Fifth"
             component={FifthView}
