@@ -107,104 +107,34 @@ const styles = StyleSheet.create({
   }
 });*/
 
-import React from 'react';
-import { StyleSheet, Text, View , ActivityIndicator, FlatList , Image , Dimensions} from 'react-native';
-import img from '../../assets/nightwishCover.jpg';
-import { TextInput } from 'react-native-gesture-handler';
-import {Ionicons} from 'react-native-vector-icons';
-import * as theme from '../../theme';
+import React, { Component } from 'react'
+import { Text, View } from 'react-native'
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
+import ShowProduct from './ShowProduct'
+import Details from './Details';
 
-const {width , height} = Dimensions.get('screen')
-export default class MainView extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: true,
-    };
-  }
+const Stack = createStackNavigator();
 
-  componentDidMount () {
-    return fetch('http://ec2-35-173-124-147.compute-1.amazonaws.com/products')
-        .then ( (res) => res.json())
-        .then ( (responseJson) => {
-          this.setState (
-            {
-              isLoading: false,
-              dataSource: responseJson.products,
-              viewSource: responseJson.products
-            },
-            function() {
-             
-            }
-          );
-        })
-    .catch((error) => {
-        console.log(error);
-    });
-  }
-
-  handleSearch(event) {
-    const search = event.nativeEvent.text;
-    const filteredProducts = this.state.dataSource.filter(i => {
-      return (typeof i.Title || i.Location || i.Category === 'string') &&
-              i.Title.includes(search) || i.Location.includes(search) || i.Category.includes(search)
-    });
-    this.setState({
-      search, viewSource:filteredProducts
-    })
-  };
-
-  List = (product) => {
-    return(
-      <View style={{ flex: 1, padding: 10, justifyContent: "space-between",  flexDirection: 'row' , flexWrap:'wrap' ,marginLeft:10  }}>
-        <View style={{flex: 0.45,  backgroundColor:'white' ,borderRadius: 10, justifyContent: 'center' }}>
-          <Image style={ styles.recommendationImage } source={img}></Image>
-          <Text style={{ fontSize: 10, fontWeight: '100', alignSelf: 'flex-start', margin:5}}>
-            {product.item.Title}
-          </Text>
-        </View>
-      </View>
-    )
-  }
+export default class MainView extends Component {
   render() {
-    if (this.state.isLoading) {
-      return (
-        <View >
-            <ActivityIndicator/>
-        </View>
-      );
-    }
-    return (
-         <View style={{ flex: 1}}>
-           <View style={{ height: 80 , backgroundColor: '#8A2BE2' , justifyContent: 'center', paddingHorizontal:5 }}>
-             <View style={{height:50 , backgroundColor:'white' , flexDirection:'row' , padding: 5, alignItems:'center'}}>
-               <Ionicons name="ios-search" style={{fontSize:24 }}/>
-               <TextInput style={{fontSize:24, marginLeft: 15}} onChange={this.handleSearch.bind(this)}  placeholder="Type Here..." value={this.state.search}/>
-             </View>
-           </View>
-           <FlatList data={this.state.viewSource}
-                       renderItem={this.List}
-                       style={{marginTop: 10}}
-                       keyExtractor={(item,index) => index.toString()}
-                       numColumns={2}/>
-         </View>
-        );
-    }
-}
+    let products = this.props.products;
+    return ( 
+        <Stack.Navigator>
+          <Stack.Screen name="ShowProduct"  options={{
+            headerShown: false,
+          }}>
+            {props=> <ShowProduct {...props} products={products}/>}
+            </Stack.Screen>
+        
+          <Stack.Screen name="Details"  options={{
+            headerShown: false,
+          }} component={Details}/>
+        </Stack.Navigator>  
+    // <View>
+    //   <ShowProduct products={this.props.products}></ShowProduct>
+    // </View>
+        )
 
-const styles = StyleSheet.create({
-  coverImage: {
-    alignSelf: 'center',
-    justifyContent: 'center',
-    width: 189,
-    height: 189,
-    borderTopLeftRadius: 10 ,
-    borderTopRightRadius: 10
-  },
-  recommendationImage: {
-    width: (width - (theme.sizes.padding * 2)) / 2,
-    height: (width - (theme.sizes.padding * 2)) / 2,
-    borderTopLeftRadius: 10 ,
-    borderTopRightRadius: 10
   }
-});
+}

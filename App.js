@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View } from 'react-native'
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer  } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import MainView from './components/Layout/MainView'
 import SecondaryView from './components/Layout/SecondaryView'
@@ -10,8 +10,11 @@ import FifthView from './components/Layout/FifthView'
 import Auth from './components/Auth/Auth'
 import { Ionicons } from 'react-native-vector-icons';
 import Constants from "expo-constants";
+import Details from './components/Layout/Details';
+import { createStackNavigator} from '@react-navigation/stack'
 
 const { manifest } = Constants;
+const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const uri = `http://${manifest.debuggerHost.split(':').shift()}:4000`;
 export default class App extends Component {
@@ -20,7 +23,7 @@ export default class App extends Component {
     this.state = {
       user:null,
       token: null,
-      product: null,
+      products: null,
       userLoggedin: false
     };
   }
@@ -41,10 +44,10 @@ export default class App extends Component {
       .then(json => {
         console.log("Todos GET successful")
         console.log("Received following JSON");
-        console.log(json);
+        //console.log(json);
 
         this.setState({ products : json.products });
-        console.log(this.state.products);
+        console.log(json.products)
       })
       .catch(error => {
         console.log("Error message:")
@@ -52,6 +55,7 @@ export default class App extends Component {
       });
       
       console.log(uri)
+      console.log(this.state.products);
   }
   userLogin = (user, token)=>
   {
@@ -62,17 +66,21 @@ export default class App extends Component {
     console.log(this.state.user);
   }
   render() {
+    console.log("hello");
+    console.log(this.state.products);
     return (
       <NavigationContainer>
+   
         <Tab.Navigator>
           <Tab.Screen
             name="Products"
-            component={MainView}
             options={{
               tabBarIcon: ({ color, size }) => (
                 <Ionicons name="ios-home" color={color} size={size} />)
-            }}
-          />
+            }}>
+            { props => <MainView {...props} products={this.state.products}/>}
+          </Tab.Screen>
+ 
           <Tab.Screen
             name="Post product"
             options={{
@@ -126,7 +134,6 @@ export default class App extends Component {
           />
         </Tab.Navigator>
       </NavigationContainer>
-      
-    )
+    );
   }
 }
