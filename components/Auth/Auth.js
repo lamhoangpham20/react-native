@@ -9,6 +9,7 @@ import SignUpScreen from './screens/SignUpScreen'
 import * as SecureStore from 'expo-secure-store'
 import LoadingScreen from '../LoadingScreen'
 import AddPost from './screens/AddPost'
+import Profile from './screens/Profile'
 import ModifyPost from './screens/ModifyPost'
 import * as Google from 'expo-google-app-auth';
 //import TodoApp from './components/TodoApp'
@@ -28,7 +29,7 @@ export default class AuthDemo extends Component {
   }
   componentDidMount() {
     // Check for stored JWT when the application loads
-    SecureStore.getItemAsync('demoApplicationJWT17')
+    SecureStore.getItemAsync('demoApplicationJWT20')
       .then(response => {
         console.log("SecureStore.getItemAsync success")
         this.setState({ activeJWT: response, isCheckingTokenStorage: false })
@@ -61,7 +62,7 @@ export default class AuthDemo extends Component {
 
   onLoginReceiveJWT = (responseJWT) => {
     // Deal with successful login by storing the token into secure store
-    SecureStore.setItemAsync('demoApplicationJWT17', responseJWT)
+    SecureStore.setItemAsync('demoApplicationJWT20', responseJWT)
       .then(response => {
         console.log(response);
         this.setState({ activeJWT: responseJWT, isCheckingTokenStorage: false })
@@ -86,7 +87,13 @@ export default class AuthDemo extends Component {
         })
       })
   }
+  // onLogout = ()=>{
+  //   console.log("Logout");
+  //   this.setState({activeJWT:null});
+  //   SecureStore.deleteItemAsync('demoApplicationJWT20');
+  // }
   authLogic = () => {
+    let userLogout = this.props.userLogout;
     const authScreens = (
       <>
         <Stack.Screen
@@ -124,7 +131,7 @@ export default class AuthDemo extends Component {
             headerShown: false,
           }}
         >
-          {props => <ModifyPost {...props} updateData = {props.updateData} user={this.state.user} token={this.state.activeJWT} products={this.props.products}></ModifyPost>}
+          {props => <ModifyPost {...props} updateData = {this.props.updateData} user={this.state.user} token={this.state.activeJWT} products={this.props.products}></ModifyPost>}
         </Stack.Screen>
         <Stack.Screen
           name="Update"
@@ -132,7 +139,7 @@ export default class AuthDemo extends Component {
             headerShown: false,
           }}
         >
-          {props => <ModifyScreen {...props} updateData = {props.updateData} user={this.state.user} token={this.state.activeJWT} products={this.props.products}></ModifyScreen>}
+          {props => <ModifyScreen {...props} updateData = {this.props.updateData} user={this.state.user} token={this.state.activeJWT} products={this.props.products}></ModifyScreen>}
         </Stack.Screen>
       </>
     )
@@ -146,6 +153,17 @@ export default class AuthDemo extends Component {
         {props => <AddPost {...props} apiURI={this.props.apiURI} user={this.state.user} token={this.state.activeJWT}></AddPost>}
       </Stack.Screen>
     )
+    const profile = (
+      <Stack.Screen
+        name="Profile"
+        options={{
+          headerShown: false,
+        }}
+      >
+        {props => <Profile {...props} onLogout={this.onLogout} apiURI={this.props.apiURI} userLogout={userLogout} user={this.state.user} token={this.state.activeJWT}></Profile>}
+      </Stack.Screen>
+    )
+
 
 
 
@@ -163,7 +181,11 @@ export default class AuthDemo extends Component {
           console.log('JWT Token found, displaying application logged in views, page 3');
           return app;
         }
-        else {
+        else if(this.props.successScreen === "Profile") {
+          console.log('JWT Token found, displaying application logged in views, page 2');
+          return profile;
+        }
+        else{
           console.log('JWT Token found, displaying application logged in views, page 2');
           return second;
         }
@@ -217,7 +239,7 @@ export default class AuthDemo extends Component {
   onLogout = () => {
     console.log("Logout");
     this.setState({ activeJWT: null });
-    SecureStore.deleteItemAsync(secureStoreTokenName);
+    SecureStore.deleteItemAsync('demoApplicationJWT18');
   }
   render() {
     return (
