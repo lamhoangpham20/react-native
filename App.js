@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View } from 'react-native'
-import { NavigationContainer  } from '@react-navigation/native'
+import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import MainView from './components/Layout/MainView'
 import SecondaryView from './components/Layout/SecondaryView'
@@ -11,7 +11,7 @@ import Auth from './components/Auth/Auth'
 import { Ionicons } from 'react-native-vector-icons';
 import Constants from "expo-constants";
 import Details from './components/Layout/Details';
-import { createStackNavigator} from '@react-navigation/stack'
+import { createStackNavigator } from '@react-navigation/stack'
 
 const { manifest } = Constants;
 const Stack = createStackNavigator();
@@ -21,15 +21,17 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user:null,
+      user: null,
       token: null,
       products: null,
-      userLoggedin: false
+      userLoggedin: false,
+      search: "",
+      searchedProducts: null,
+      searchType:'category'
     };
   }
-  
-  componentDidMount()
-  {
+
+  componentDidMount() {
     fetch('http://ec2-35-173-124-147.compute-1.amazonaws.com/products', {
       method: 'GET',
     })
@@ -39,23 +41,31 @@ export default class App extends Component {
         }
         //console.log(response);
         return response.json();
-        
+
       })
       .then(json => {
         console.log("product in app")
 
-        this.setState({ products : json.products });
+        this.setState({ products: json.products, searchedProducts: json.products });
         //console.log(this.state.products);
       })
       .catch(error => {
         console.log("Error message:")
         console.log(error.message)
       });
-      
-      console.log(uri)
-      console.log(this.state.products);
+
+    console.log(uri)
+    console.log(this.state.products);
   }
-  updateData = ()=>{
+  choseType= (text)=>{
+    this.setState({searchType:text})
+    console.log(this.state.searchType)
+  }
+  handleSearch = (text) => {
+    console.log(text);
+    this.setState({ search: text })
+  }
+  updateData = () => {
     fetch('http://ec2-35-173-124-147.compute-1.amazonaws.com/products', {
       method: 'GET',
     })
@@ -65,12 +75,12 @@ export default class App extends Component {
         }
         //console.log(response);
         return response.json();
-        
+
       })
       .then(json => {
         console.log("product in app")
 
-        this.setState({ products : json.products });
+        this.setState({ products: json.products, searchedProducts: json.products });
         //console.log(this.state.products);
       })
       .catch(error => {
@@ -78,20 +88,22 @@ export default class App extends Component {
         console.log(error.message)
       });
   }
-  userLogin = (user, token)=>
-  {
+  userLogin = (user, token) => {
     console.log(token);
     console.log(user);
-    this.setState({user:user, token:token});
-  
+    this.setState({ user: user, token: token });
+
     console.log(this.state.user);
   }
+  searchProduct = (category) => {
+    this.setState({ searchedProducts: category })
+  };
   render() {
     console.log("hello");
     console.log(this.state.products);
     return (
       <NavigationContainer>
-   
+
         <Tab.Navigator>
           <Tab.Screen
             name="Products"
@@ -99,26 +111,28 @@ export default class App extends Component {
               tabBarIcon: ({ color, size }) => (
                 <Ionicons name="ios-home" color={color} size={size} />)
             }}>
-            { props => <MainView {...props} products={this.state.products}/>}
+            {props => <MainView {...props} searchProduct={this.searchProduct} products={this.state.products} handleSearch={this.handleSearch} 
+                                           search={this.state.search} searchedProducts={this.state.searchedProducts}
+                                           choseType={this.choseType} searchType={this.state.searchType} />}
           </Tab.Screen>
- 
+
           <Tab.Screen
             name="Post product"
             options={{
               tabBarIcon: ({ color, size }) => (
                 <Ionicons name="ios-paper" color={color} size={size} />)
             }}>
-            { props => <SecondaryView
+            {props => <SecondaryView
               {...props}
-              apiURI = 'http://ec2-35-173-124-147.compute-1.amazonaws.com'
-              userLogin = {this.userLogin}
+              apiURI='http://ec2-35-173-124-147.compute-1.amazonaws.com'
+              userLogin={this.userLogin}
               successScreen="postProduct"
               token={this.state.token}
-              user = {this.state.user}
-              updateData = {this.updateData}
+              user={this.state.user}
+              updateData={this.updateData}
             />}
 
-            </Tab.Screen>
+          </Tab.Screen>
 
           <Tab.Screen
             name="My Post"
@@ -127,17 +141,17 @@ export default class App extends Component {
                 <Ionicons name="ios-list" color={color} size={size} />)
             }}
           >
-            { props => <ThirdView
-                          {...props}
-                          apiURI = 'http://ec2-35-173-124-147.compute-1.amazonaws.com'
-                          userLogin = {this.userLogin}
-                          successScreen="productManagement"
-                          token={this.state.token}
-                          user = {this.state.user}
-                          products = {this.state.products}
-                          updateData = {this.updateData}
-                        />}
-            </Tab.Screen>
+            {props => <ThirdView
+              {...props}
+              apiURI='http://ec2-35-173-124-147.compute-1.amazonaws.com'
+              userLogin={this.userLogin}
+              successScreen="productManagement"
+              token={this.state.token}
+              user={this.state.user}
+              products={this.state.products}
+              updateData={this.updateData}
+            />}
+          </Tab.Screen>
 
           <Tab.Screen
             name="Fourth"

@@ -119,12 +119,21 @@ const Stack = createStackNavigator();
 export default class MainView extends Component {
   render() {
     let products = this.props.products;
+    let handleSearch = this.props.handleSearch;
+    let search = this.props.search;
+    let searchedProducts= this.props.searchedProducts;
+    let searchProduct = this.props.searchProduct;
+    let choseType = this.props.choseType;
+    let searchType = this.props.searchType;
+  
     return ( 
         <Stack.Navigator>
           <Stack.Screen name="ShowProduct"  options={{
             headerShown: false,
           }}>
-            {props=> <ShowProduct {...props} products={products}/>}
+            {props=> <ShowProduct {...props} searchProduct={searchProduct} products={products} 
+            handleSearch={handleSearch} search={search} choseType={choseType} searchType={searchType}
+             searchedProducts={searchedProducts}/>}
             </Stack.Screen>
         
           <Stack.Screen name="Details"  options={{
