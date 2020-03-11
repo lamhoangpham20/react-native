@@ -28,7 +28,7 @@ export default class App extends Component {
       userLoggedin: false,
       search: "",
       searchedProducts: null,
-      searchType:'category'
+      searchType: 'category'
     };
   }
 
@@ -58,8 +58,8 @@ export default class App extends Component {
     console.log(uri)
     console.log(this.state.products);
   }
-  choseType= (text)=>{
-    this.setState({searchType:text})
+  choseType = (text) => {
+    this.setState({ searchType: text })
     console.log(this.state.searchType)
   }
   handleSearch = (text) => {
@@ -100,14 +100,12 @@ export default class App extends Component {
   searchProduct = (category) => {
     this.setState({ searchedProducts: category })
   };
-  
-  userLogout = ()=>
-  {
-    this.setState({user:null, token:null});
+
+  userLogout = () => {
+    this.setState({ user: null, token: null });
     SecureStore.deleteItemAsync('demoApplicationJWT20');
     console.log('bu cu');
   }
-
   render() {
     console.log("hello");
     console.log(this.state.products);
@@ -121,9 +119,9 @@ export default class App extends Component {
               tabBarIcon: ({ color, size }) => (
                 <Ionicons name="ios-home" color={color} size={size} />)
             }}>
-            {props => <MainView {...props} searchProduct={this.searchProduct} products={this.state.products} handleSearch={this.handleSearch} 
-                                           search={this.state.search} searchedProducts={this.state.searchedProducts}
-                                           choseType={this.choseType} searchType={this.state.searchType} updateData={this.updateData} />}
+            {props => <MainView {...props} searchProduct={this.searchProduct} products={this.state.products} handleSearch={this.handleSearch}
+              search={this.state.search} searchedProducts={this.state.searchedProducts}
+              choseType={this.choseType} searchType={this.state.searchType} updateData={this.updateData} />}
           </Tab.Screen>
 
           <Tab.Screen
@@ -170,16 +168,16 @@ export default class App extends Component {
                 <Ionicons name="ios-person" color={color} size={size} />)
             }}
           >
-            { props => <FourthView
-                          {...props}
-                          apiURI = 'http://ec2-35-173-124-147.compute-1.amazonaws.com'
-                          userLogin = {this.userLogin}
-                          successScreen="Profile"
-                          token={this.state.token}
-                          user = {this.state.user}
-                          userLogout = {this.userLogout}
-                          products = {this.state.products}
-                        />}
+            {props => <FourthView
+              {...props}
+              apiURI='http://ec2-35-173-124-147.compute-1.amazonaws.com'
+              userLogin={this.userLogin}
+              successScreen="Profile"
+              token={this.state.token}
+              user={this.state.user}
+              userLogout={this.userLogout}
+              products={this.state.products}
+            />}
           </Tab.Screen>
           <Tab.Screen
             name="Fifth"

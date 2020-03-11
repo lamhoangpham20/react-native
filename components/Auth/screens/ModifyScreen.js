@@ -22,15 +22,16 @@ const ModifyScreen = (props) => {
   const [price, setPrice] = useState(products.Price);
   const [Shippingtype, setShippingtype] = useState(products.ShippingType);
   function picture() {
-    
-    let source = 'http://ec2-35-173-124-147.compute-1.amazonaws.com/image/'+images;
+
+    let source = 'http://ec2-35-173-124-147.compute-1.amazonaws.com/image/' + images;
     console.log(source);
     if (photo === null) {
-      return <Image style={{ width: 100, height: 100 }} source={{uri:'http://ec2-35-173-124-147.compute-1.amazonaws.com/image/'+images}}></Image>
+      return <View><Image style={{ width: 200, height: 200, marginBottom: 20, alignSelf: 'center' }} source={{ uri: 'http://ec2-35-173-124-147.compute-1.amazonaws.com/image/' + images }}></Image></View>
     }
     else {
       console.log(photo.uri);
-      return <Image style={{ width: 100, height: 100 }} source={photo}></Image>
+
+      return <View><Image style={{ width: 200, height: 200, marginBottom: 20, alignSelf: 'center' }} source={photo}></Image></View>
     }
   }
   openImagePickerAsync = async () => {
@@ -65,9 +66,8 @@ const ModifyScreen = (props) => {
     setImagePost(postForm);
     console.log(postForm);
   }
-  function deleteItem(idproduct)
-  {
-    fetch(apiURI + '/products/'+idproduct, {
+  function deleteItem(idproduct) {
+    fetch(apiURI + '/products/' + idproduct, {
       method: "DELETE",
       headers: {
         //"Content-type": "application/json; charset=UTF-8",
@@ -124,7 +124,7 @@ const ModifyScreen = (props) => {
         return response.json();
       })
       .then(json => {
-        
+
         props.navigation.reset({
           index: 0,
           routes: [{ name: 'Management' }],
@@ -134,126 +134,140 @@ const ModifyScreen = (props) => {
         console.log("Error message:")
         console.log(error.message)
       });
-      updateData();
+    updateData();
   }
   return (
-    <ScrollView style={{ flex: 1 }}>
-      <View style={styles.screen}>
-
-        <Text style={styles.header}>Edit</Text>
-        <Text>Title</Text>
-        <TextInput
-          style={styles.input}
-          value={title}
-          placeholder="johndoe"
-          onChangeText={value => setTitle(value)}
-        />
-        <Text>Description</Text>
-        <TextInput
-          style={styles.input}
-          value={description}
-          placeholder="test@email.com"
-          onChangeText={value => setDescription(value)}
-        />
-        <Text>Category</Text>
-        <TextInput
-          style={styles.input}
-          value={category}
-          placeholder="password"
-          onChangeText={value => setCategory(value)}
-        />
-        <Text>Location</Text>
-        <TextInput
-          style={styles.input}
-          value={location}
-          placeholder="phoneNumber"
-          onChangeText={value => setLocation(value)}
-        />
-        <TouchableOpacity onPress={() => openImagePickerAsync()} style={{ borderWidth: 1, borderColor: 'black' }}>
-          <Text>Pick a photo</Text>
-        </TouchableOpacity>
-        {picture()}
-        <TextInput
-          style={styles.input}
-          value={images}
-          placeholder="phoneNumber"
-          onChangeText={value => setImages(value)}
-        />
-        <Text>Price</Text>
-        <TextInput
-          style={styles.input}
-          value={price}
-          placeholder="phoneNumber"
-          onChangeText={value => setPrice(value)}
-        />
-        <Text>Shipping</Text>
-        <TextInput
-          style={styles.input}
-          value={Shippingtype}
-          placeholder="phoneNumber"
-          onChangeText={value => setShippingtype(value)}
-        />
-        <Button
-          title="Cancel"
-          color="#000000"
-          onPress={
-            () => props.navigation.reset({
-              index: 0,
-              routes: [{ name: 'Management' }],
-            })
-          } />
-        <TouchableHighlight onPress={() => editItem(idproduct)}>
-          <View style={styles.primaryButton}>
-            <Text style={styles.primaryButtonText}>Edit Item</Text>
-          </View>
-        </TouchableHighlight>
-        <TouchableHighlight onPress={() => deleteItem(idproduct)}>
-          <View style={styles.primaryButton}>
-            <Text style={styles.primaryButtonText}>Delete</Text>
-          </View>
-        </TouchableHighlight>
+    <View style={{ flex: 1 }}>
+      <View style={styles.topBar}>
+        <Text style={styles.header}>Add new Item</Text>
       </View>
-    </ScrollView>
+      <ScrollView style={{ flex: 1 }}>
+        <View style={styles.screen}>
+          <View style={styles.inputBox}>
+            <Text>Title</Text>
+            <TextInput
+              style={styles.input}
+              value={title}
+              placeholder="johndoe"
+              onChangeText={value => setTitle(value)}
+            /></View>
+          <View style={styles.inputBox}>
+            <Text>Description</Text>
+            <TextInput
+              style={styles.input}
+              value={description}
+              placeholder="test@email.com"
+              onChangeText={value => setDescription(value)}
+            /></View>
+          <View style={styles.inputBox}>
+            <Text>Category</Text>
+            <TextInput
+              style={styles.input}
+              value={category}
+              placeholder="password"
+              onChangeText={value => setCategory(value)}
+            /></View>
+          <View style={styles.inputBox}>
+            <Text>Location</Text>
+            <TextInput
+              style={styles.input}
+              value={location}
+              placeholder="phoneNumber"
+              onChangeText={value => setLocation(value)}
+            /></View>
+          <View style={styles.inputBox}>
+            <TouchableOpacity onPress={() => openImagePickerAsync()} style={{ borderWidth: 1, borderColor: 'black' }}>
+              <Text>Pick a photo</Text>
+            </TouchableOpacity></View>
+          {picture()}
+          <View style={styles.inputBox}>
+            <Text>Price</Text>
+            <TextInput
+              style={styles.input}
+              value={price}
+              placeholder="phoneNumber"
+              onChangeText={value => setPrice(value)}
+            /></View>
+          <View style={styles.inputBox}>
+            <Text>Shipping</Text>
+            <TextInput
+              style={styles.input}
+              value={Shippingtype}
+              placeholder="phoneNumber"
+              onChangeText={value => setShippingtype(value)}
+            /></View>
+
+          <TouchableHighlight onPress={() => editItem(idproduct)}>
+            <View style={styles.primaryButton}>
+              <Text style={styles.primaryButtonText}>Edit Item</Text>
+            </View>
+          </TouchableHighlight>
+          <TouchableHighlight onPress={() => deleteItem(idproduct)}>
+            <View style={styles.primaryButton}>
+              <Text style={styles.primaryButtonText}>Delete</Text>
+            </View>
+          </TouchableHighlight>
+          <Button
+            title="Cancel"
+            color="#000000"
+            onPress={
+              () => props.navigation.reset({
+                index: 0,
+                routes: [{ name: 'Management' }],
+              })
+            } />
+        </View>
+      </ScrollView>
+    </View>
   )
 
 }
 const styles = StyleSheet.create({
+  inputBox: {
+    height: 70,
+    width: '90%',
+    alignSelf: 'center',
+    marginBottom: 35
+  },
+  topBar: {
+    backgroundColor: 'rgb(249, 79, 85)'
+  },
   screen: {
-    backgroundColor: 'rgb(51, 153, 255)',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    backgroundColor: 'rgb(255, 255, 255)',
+    flex: 6,
+    paddingTop: 20
   },
   header: {
     fontSize: 40,
-    marginBottom: 20,
-    color: 'white'
+    marginTop: 20,
+    color: 'white',
+    alignSelf: 'center'
   },
   text: {
-    fontSize: 20,
-    color: 'white'
+    fontWeight: '500',
+    fontSize: 15,
+    color: 'black'
   },
   input: {
-    borderWidth: 1,
-    borderRadius: 20,
     height: 40,
-    width: '90%',
+    width: '100%',
     backgroundColor: 'white',
-    textAlign: 'center',
+    textAlign: 'left',
     fontSize: 18,
-    marginTop: 5,
-    marginBottom: 20
+    marginTop: 0,
+    marginBottom: 20,
+    borderBottomWidth: 2,
+    borderBottomColor: '#9399ad'
   },
   primaryButton: {
-    backgroundColor: 'rgb(0, 153, 51)',
+    backgroundColor: 'rgb(249, 79, 85)',
     height: 60,
     width: 200,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: 'black',
-    borderWidth: 2,
     marginTop: 20,
-    marginBottom: 10
+    marginBottom: 10,
+    alignSelf: 'center'
   },
   primaryButtonText: {
     color: 'white',

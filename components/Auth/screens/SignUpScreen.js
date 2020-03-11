@@ -24,15 +24,15 @@ const SignUpScreen = (props) => {
         }
       })
       .then(response => {
-        if (response.ok == false) {
+        if (response.status != 201) {
           throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.json()));
         }
-        return response.json();
+        return response.text();
       })
       .then(json => {
         props.navigation.reset({
           index: 0,
-          routes: [{ name: 'SignupCompleted' }],
+          routes: [{ name: 'Login' }]
         })
       })
       .catch(error => {
@@ -45,33 +45,34 @@ const SignUpScreen = (props) => {
   return (
     <View style={ styles.screen }>
       <Text style={ styles.header }>Sign Up</Text>
-      <Text>Please enter your username</Text>
+      <Text style={ styles.text}>Please enter your username</Text>
       <TextInput
         style={ styles.input }
         value={ username }
         placeholder="johndoe"
         onChangeText={ value => setUsername(value)}
       />
-      <Text>Please enter your email</Text>
+      <Text style={ styles.text}>Please enter your email</Text>
       <TextInput
         style={ styles.input }
         value={ email }
         placeholder="test@email.com"
         onChangeText={ value => setEmail(value)}
       />
-      <Text>Please enter your password</Text>
+      <Text style={ styles.text}>Please enter your password</Text>
       <TextInput
         style={ styles.input }
+        secureTextEntry={true}
         value={ password }
         type="password"
         placeholder="password"
         onChangeText={ value => setPassword(value)}
       />
-      <Text>Please enter your phoneNumber</Text>
+      <Text style={ styles.text}>Please enter your phone number</Text>
       <TextInput
         style={ styles.input }
         value={ phoneNumber }
-        placeholder="phoneNumber"
+        placeholder="phone number"
         onChangeText={ value => setPhoneNumber(value)}
       />
       <TouchableHighlight onPress={ () => signupPressed() }>
@@ -94,7 +95,7 @@ const SignUpScreen = (props) => {
 
 const styles = StyleSheet.create({
   screen: {
-    backgroundColor: 'rgb(227, 178, 0)',
+    backgroundColor: 'rgb(59, 89, 153)',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
@@ -105,28 +106,26 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   text: {
-    fontSize: 20,
+    fontSize: 13,
     color: 'white'
   },
   input: {
-    borderWidth: 1,
-    borderRadius: 20,
     height: 40,
     width: '90%',
     backgroundColor: 'white',
     textAlign: 'center',
     fontSize: 18,
+    borderRadius:5,
     marginTop: 5,
     marginBottom: 20
   },
   primaryButton: {
-    backgroundColor: 'rgb(0, 153, 51)',
-    height: 60,
-    width: 200,
+    backgroundColor: 'rgb(79, 105, 162)',
+    height: 50,
+    width: 300,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: 'black',
-    borderWidth: 2,
+    borderRadius:5,
     marginTop: 20,
     marginBottom: 10
   },

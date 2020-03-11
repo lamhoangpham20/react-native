@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, Image, StyleSheet, Button, TouchableOpacity , TextInput, TouchableHighlight } from 'react-native'
+import { View, Text, Image, StyleSheet, Button, TouchableOpacity, TextInput, TouchableHighlight } from 'react-native'
 import LoadingScreen from '../../LoadingScreen'
 import * as ImagePicker from 'expo-image-picker'
 import { PinchGestureHandler, ScrollView } from 'react-native-gesture-handler'
@@ -15,17 +15,14 @@ const AddPost = (props) => {
   const [price, setPrice] = useState("");
   const [Shippingtype, setShippingtype] = useState("");
 
-  function picture()
-  {
-    
-    if (photo ===null)
-    {
+  function picture() {
+
+    if (photo === null) {
       return <></>
     }
-    else 
-    {
+    else {
       console.log(photo.uri);
-      return <Image style={{ width : 100 , height : 100} } source={photo}></Image>
+      return <View><Image style={{ width: 200, height: 200, marginBottom: 20, alignSelf: 'center' }} source={photo}></Image></View>
     }
   }
   openImagePickerAsync = async () => {
@@ -39,13 +36,12 @@ const AddPost = (props) => {
     let pickerResult = await ImagePicker.launchImageLibraryAsync();
     console.log(pickerResult);
 
-    if(pickerResult.cancelled == true)
-    {
+    if (pickerResult.cancelled == true) {
       alert('Image picker cancelled or failed');
       return;
     }
     var source;
-    source = {uri:pickerResult.uri.replace('file://', ''), isStatic: true};
+    source = { uri: pickerResult.uri.replace('file://', ''), isStatic: true };
     const fileNameSplit = pickerResult.uri.split('/');
     const fileName = fileNameSplit[fileNameSplit.length - 1];
 
@@ -61,8 +57,7 @@ const AddPost = (props) => {
     setImagePost(postForm);
     console.log(postForm);
   }
-  function postPressed()
-  {
+  function postPressed() {
     console.log(imagePost);
     fetch(props.apiURI + '/fileUpload', {
       method: "POST",
@@ -80,24 +75,24 @@ const AddPost = (props) => {
         console.log("upload error", error);
         alert("Upload failed!");
       });
-    
+
     fetch(props.apiURI + '/products', {
-        method: 'POST',
-        body: JSON.stringify({
-          idusers : props.user.id,
-          title: title,
-          description: description,
-          category:category,
-          location:location,
-          images:images,
-          price:price,
-          Shippingtype:Shippingtype
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-          "Authorization": "Bearer " + props.token
-        }
-      })
+      method: 'POST',
+      body: JSON.stringify({
+        idusers: props.user.id,
+        title: title,
+        description: description,
+        category: category,
+        location: location,
+        images: images,
+        price: price,
+        Shippingtype: Shippingtype
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        "Authorization": "Bearer " + props.token
+      }
+    })
       .then(response => {
         if (response.ok == false) {
           throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.json()));
@@ -106,136 +101,155 @@ const AddPost = (props) => {
       })
       .then(json => {
         console.log(json);
-        
+
       })
       .catch(error => {
         console.log("Error message:")
         console.log(error.message)
       });
-      props.updateData();
-    
+    props.updateData();
+
 
   }
 
-  if (props.user === null)
-  {
-    return(<LoadingScreen></LoadingScreen>)
+  if (props.user === null) {
+    return (<LoadingScreen></LoadingScreen>)
   }
-  else{
-  return (
-    <ScrollView>
-    <View style={ styles.screen }>
-      <Text style={ styles.header }>Add new Item</Text>
-      <Text>Title</Text>
-      <TextInput
-        style={ styles.input }
-        value={ title }
-        placeholder="johndoe"
-        onChangeText={ value => setTitle(value)}
-      />
-      <Text>Description</Text>
-      <TextInput
-        style={ styles.input }
-        value={ description }
-        placeholder="test@email.com"
-        onChangeText={ value => setDescription(value)}
-      />
-      <Text>Category</Text>
-      <TextInput
-        style={ styles.input }
-        value={ category }
-        placeholder="password"
-        onChangeText={ value => setCategory(value)}
-      />
-      <Text>Location</Text>
-      <TextInput
-        style={ styles.input }
-        value={ location }
-        placeholder="phoneNumber"
-        onChangeText={ value => setLocation(value)}
-      />
-      <Text>Images</Text>
-      <TouchableOpacity onPress={()=> openImagePickerAsync()} style={{ borderWidth: 1, borderColor: 'black'}}>
-          <Text>Pick a photo</Text>
-        </TouchableOpacity>
-        {picture()}
-      
-      <Text>Price</Text>
-      <TextInput
-        style={ styles.input }
-        value={ price }
-        placeholder="phoneNumber"
-        onChangeText={ value => setPrice(value)}
-      />
-      <Text>Shipping</Text>
-      <TextInput
-        style={ styles.input }
-        value={ Shippingtype }
-        placeholder="phoneNumber"
-        onChangeText={ value => setShippingtype(value)}
-      />
-      <TouchableHighlight onPress={ () => postPressed() }>
-        <View style={ styles.primaryButton }>
-          <Text style={ styles.primaryButtonText }>Add post</Text>
+  else {
+    return (
+      <View style={{ flex: 1 }}>
+        <View style={styles.topBar}>
+          <Text style={styles.header}>Add new Item</Text>
         </View>
-      </TouchableHighlight>
-      <Button
-        title="Cancel"
-        color="#000000"
-        onPress={
-          () => props.navigation.reset({
-            index: 0,
-            routes: [{ name: 'Login' }],
-          })
-        } />
-    </View>
-    </ScrollView>
-  )
-      }
+        <ScrollView style={{ flex: 5 }}>
+          <View style={styles.screen}>
+            <View style={styles.inputBox}>
+              <Text style={styles.text}>Title</Text>
+              <TextInput
+                style={styles.input}
+                value={title}
+                onChangeText={value => setTitle(value)}
+              />
+            </View>
+            <View style={styles.inputBox}>
+              <Text style={styles.text}>Description</Text>
+              <TextInput
+                style={styles.input}
+                value={description}
+                onChangeText={value => setDescription(value)}
+              />
+            </View>
+            <View style={styles.inputBox}>
+              <Text style={styles.text}>Category</Text>
+              <TextInput
+                style={styles.input}
+                value={category}
+                onChangeText={value => setCategory(value)}
+              />
+            </View>
+            <View style={styles.inputBox}>
+              <Text style={styles.text}>Location</Text>
+              <TextInput
+                style={styles.input}
+                value={location}
+                onChangeText={value => setLocation(value)}
+              />
+            </View>
+            <View style={styles.inputBox}>
+              <Text style={styles.text}>Images</Text>
+              <TouchableOpacity onPress={() => openImagePickerAsync()} style={{ borderWidth: 1, borderColor: 'black' }}>
+                <Text>Pick a photo</Text>
+              </TouchableOpacity>
+            </View>
+            {picture()}
+            <View style={styles.inputBox}>
+              <Text style={styles.text}>Price</Text>
+              <TextInput
+                style={styles.input}
+                value={price}
+                onChangeText={value => setPrice(value)}
+              />
+            </View>
+            <View style={styles.inputBox}>
+              <Text style={styles.text}>Shipping</Text>
+              <TextInput
+                style={styles.input}
+                value={Shippingtype}
+                onChangeText={value => setShippingtype(value)}
+              />
+            </View>
+            <TouchableHighlight onPress={() => postPressed()}>
+              <View style={styles.primaryButton}>
+                <Text style={styles.primaryButtonText}>Add post</Text>
+              </View>
+            </TouchableHighlight>
+            <Button
+              title="Cancel"
+              color="#000000"
+              onPress={
+                () => props.navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'Login' }],
+                })
+              } />
+          </View>
+        </ScrollView>
+      </View>
+    )
   }
+}
 
-  const styles = StyleSheet.create({
-    screen: {
-      backgroundColor: 'rgb(227, 178, 0)',
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center'
-    },
-    header: {
-      fontSize: 40,
-      marginBottom: 20,
-      color: 'white'
-    },
-    text: {
-      fontSize: 20,
-      color: 'white'
-    },
-    input: {
-      borderWidth: 1,
-      borderRadius: 20,
-      height: 40,
-      width: '90%',
-      backgroundColor: 'white',
-      textAlign: 'center',
-      fontSize: 18,
-      marginTop: 5,
-      marginBottom: 20
-    },
-    primaryButton: {
-      backgroundColor: 'rgb(0, 153, 51)',
-      height: 60,
-      width: 200,
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderColor: 'black',
-      borderWidth: 2,
-      marginTop: 20,
-      marginBottom: 10
-    },
-    primaryButtonText: {
-      color: 'white',
-      fontSize: 20
-  
-    }
-  });
+const styles = StyleSheet.create({
+  inputBox: {
+    height: 70,
+    width: '90%',
+    alignSelf: 'center',
+    marginBottom: 35
+  },
+  topBar: {
+    backgroundColor: 'rgb(249, 79, 85)'
+  },
+  screen: {
+    backgroundColor: 'rgb(255, 255, 255)',
+    flex: 6,
+    paddingTop: 20
+  },
+  header: {
+    fontSize: 40,
+    marginTop: 20,
+    color: 'white',
+    alignSelf: 'center'
+  },
+  text: {
+    fontWeight: '500',
+    fontSize: 15,
+    color: 'black'
+  },
+  input: {
+    height: 40,
+    width: '100%',
+    backgroundColor: 'white',
+    textAlign: 'left',
+    fontSize: 18,
+    marginTop: 0,
+    marginBottom: 20,
+    borderBottomWidth: 2,
+    borderBottomColor: '#9399ad'
+  },
+  primaryButton: {
+    backgroundColor: 'rgb(249, 79, 85)',
+    height: 60,
+    width: 200,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 10,
+    alignSelf: 'center'
+  },
+  primaryButtonText: {
+    color: 'white',
+    fontSize: 20
+
+  }
+});
 export default AddPost
