@@ -96,18 +96,18 @@ export default class App extends Component {
 
     console.log(this.state.user);
   }
-<<<<<<< HEAD
+
   searchProduct = (category) => {
     this.setState({ searchedProducts: category })
   };
-=======
+  
   userLogout = ()=>
   {
     this.setState({user:null, token:null});
     SecureStore.deleteItemAsync('demoApplicationJWT20');
     console.log('bu cu');
   }
->>>>>>> d3115d6fa7705456bf432f058b8dc11765632042
+
   render() {
     console.log("hello");
     console.log(this.state.products);
@@ -123,7 +123,7 @@ export default class App extends Component {
             }}>
             {props => <MainView {...props} searchProduct={this.searchProduct} products={this.state.products} handleSearch={this.handleSearch} 
                                            search={this.state.search} searchedProducts={this.state.searchedProducts}
-                                           choseType={this.choseType} searchType={this.state.searchType} />}
+                                           choseType={this.choseType} searchType={this.state.searchType} updateData={this.updateData} />}
           </Tab.Screen>
 
           <Tab.Screen

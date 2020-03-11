@@ -125,7 +125,7 @@ export default class MainView extends Component {
     let searchProduct = this.props.searchProduct;
     let choseType = this.props.choseType;
     let searchType = this.props.searchType;
-  
+    let updateData = this.props.updateData;
     return ( 
         <Stack.Navigator>
           <Stack.Screen name="ShowProduct"  options={{
@@ -133,7 +133,7 @@ export default class MainView extends Component {
           }}>
             {props=> <ShowProduct {...props} searchProduct={searchProduct} products={products} 
             handleSearch={handleSearch} search={search} choseType={choseType} searchType={searchType}
-             searchedProducts={searchedProducts}/>}
+             searchedProducts={searchedProducts} updateData={updateData} />}
             </Stack.Screen>
         
           <Stack.Screen name="Details"  options={{
