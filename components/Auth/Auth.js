@@ -41,7 +41,7 @@ export default class AuthDemo extends Component {
             "Authorization": "Bearer " + this.state.activeJWT
           }
         }).then(response => {
-          if (response.ok == false) {
+          if (response.status == 401) {
             this.setState({ activeJWT: null, isCheckingTokenStorage: false });
             this.props.userLogin(null, null);
             throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.json()));
@@ -74,7 +74,7 @@ export default class AuthDemo extends Component {
             "Authorization": "Bearer " + this.state.activeJWT
           }
         }).then(response => {
-          if (response.ok == false) {
+          if (response.status == 401) {
             throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.json()));
           }
           return response.json();
@@ -181,13 +181,13 @@ export default class AuthDemo extends Component {
           console.log('JWT Token found, displaying application logged in views, page 3');
           return app;
         }
-        else if(this.props.successScreen === "Profile") {
+        else if(this.props.successScreen === "postProduct") {
           console.log('JWT Token found, displaying application logged in views, page 2');
-          return profile;
+          return second;
         }
         else{
           console.log('JWT Token found, displaying application logged in views, page 2');
-          return second;
+          return profile;
         }
       }
       else {
@@ -212,7 +212,7 @@ export default class AuthDemo extends Component {
         console.log(result);
         let opt = { access_token: result.accessToken };
         console.log(opt);
-        fetch('http://10.4.0.6:4000/auth/google', {
+        fetch('http://ec2-35-173-124-147.compute-1.amazonaws.com/auth/google', {
           method: 'POST',
           body: JSON.stringify(opt)
         }).then(response => {
