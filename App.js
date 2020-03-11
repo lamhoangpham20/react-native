@@ -107,8 +107,6 @@ export default class App extends Component {
     console.log('bu cu');
   }
   render() {
-    console.log("hello");
-    console.log(this.state.products);
     return (
       <NavigationContainer>
 

@@ -1,10 +1,17 @@
 import React from 'react'
 import { View, Text } from 'react-native'
-
+import RNPickerSelect from 'react-native-picker-select';
 const FifthView = () => {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text style={{ fontSize: 50, fontWeight: '700' }}>Fifth View</Text>
+    <View style={{ margin: 50 }}>
+      <RNPickerSelect
+        onValueChange={(value) => console.log(value)}
+        items={[
+          { label: 'Football', value: 'football' },
+          { label: 'Baseball', value: 'baseball' },
+          { label: 'Hockey', value: 'hockey' },
+        ]}
+      />
     </View>
   )
 }
