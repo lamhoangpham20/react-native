@@ -59,7 +59,11 @@ const LoginScreen = (props) => {
           <Text style={styles.primaryButtonText}>Login with Google</Text>
         </View>
       </TouchableHighlight>
-      
+      {/* <TouchableHighlight onPress={() => props.facebookLogin()}>
+        <View style={styles.google}>
+          <Text style={styles.primaryButtonText}>Login with Facebook</Text>
+        </View>
+      </TouchableHighlight> */}
       <Button title="Sign up" color="#FFFFFF" onPress={() => props.navigation.navigate('Signup')} />
 
     </View>

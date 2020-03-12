@@ -94,20 +94,20 @@ const AddPost = (props) => {
       }
     })
       .then(response => {
-        if (response.ok == false) {
+        if (response.status != 201) {
           throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.json()));
         }
-        return response.json();
+        return response.text();
       })
       .then(json => {
         console.log(json);
-
+        props.updateData();
       })
       .catch(error => {
         console.log("Error message:")
         console.log(error.message)
       });
-    props.updateData();
+   
 
 
   }

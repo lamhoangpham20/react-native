@@ -77,6 +77,10 @@ const ModifyScreen = (props) => {
       .then(response => {
         console.log("upload succes", response);
         updateData();
+        props.navigation.reset({
+          index: 0,
+          routes: [{ name: 'Management' }],
+        });
       })
       .catch(error => {
         console.log("upload error", error);
@@ -118,28 +122,30 @@ const ModifyScreen = (props) => {
       }
     })
       .then(response => {
-        if (response.Created == false) {
+        if (response.status != 201) {
           throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.json()));
         }
-        return response.json();
+        return  response.text();
       })
       .then(json => {
-
-        props.navigation.reset({
-          index: 0,
-          routes: [{ name: 'Management' }],
-        });
+      console.log(json);
+      updateData();
+    props.navigation.reset({
+      index: 0,
+      routes: [{ name: 'Management' }],
+    });
       })
       .catch(error => {
         console.log("Error message:")
         console.log(error.message)
       });
-    updateData();
+
+    
   }
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.topBar}>
-        <Text style={styles.header}>Add new Item</Text>
+        <Text style={styles.header}>Modify Item</Text>
       </View>
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.screen}>

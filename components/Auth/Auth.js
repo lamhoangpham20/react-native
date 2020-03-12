@@ -12,7 +12,9 @@ import AddPost from './screens/AddPost'
 import Profile from './screens/Profile'
 import ModifyPost from './screens/ModifyPost'
 import * as Google from 'expo-google-app-auth';
+import Expo from 'expo'
 //import TodoApp from './components/TodoApp'
+//import {GoogleSignin, GoogleSigninButton,statusCodes} from 'react-native-google-signin';
 
 
 const Stack = createStackNavigator();
@@ -102,7 +104,8 @@ export default class AuthDemo extends Component {
             headerShown: false,
           }}
         >
-          {props => <LoginScreen {...props} onLoginReceiveJWT={this.onLoginReceiveJWT} apiURI={this.props.apiURI} googleLogin={this.signInWithGoogleAsync}></LoginScreen>}
+          {props => <LoginScreen {...props} onLoginReceiveJWT={this.onLoginReceiveJWT} apiURI={this.props.apiURI} googleLogin={this.signInWithGoogleAsync}
+            facebookLogin={this.onfacebookLogin}></LoginScreen>}
         </Stack.Screen>
         <Stack.Screen
           name="Signup"
@@ -131,7 +134,7 @@ export default class AuthDemo extends Component {
             headerShown: false,
           }}
         >
-          {props => <ModifyPost {...props} updateData = {this.props.updateData} user={this.state.user} token={this.state.activeJWT} products={this.props.products}></ModifyPost>}
+          {props => <ModifyPost {...props} updateData={this.props.updateData} user={this.state.user} token={this.state.activeJWT} products={this.props.products}></ModifyPost>}
         </Stack.Screen>
         <Stack.Screen
           name="Update"
@@ -139,7 +142,7 @@ export default class AuthDemo extends Component {
             headerShown: false,
           }}
         >
-          {props => <ModifyScreen {...props} updateData = {this.props.updateData} user={this.state.user} token={this.state.activeJWT} products={this.props.products}></ModifyScreen>}
+          {props => <ModifyScreen {...props} updateData={this.props.updateData} user={this.state.user} token={this.state.activeJWT} products={this.props.products}></ModifyScreen>}
         </Stack.Screen>
       </>
     )
@@ -181,11 +184,11 @@ export default class AuthDemo extends Component {
           console.log('JWT Token found, displaying application logged in views, page 3');
           return app;
         }
-        else if(this.props.successScreen === "postProduct") {
+        else if (this.props.successScreen === "postProduct") {
           console.log('JWT Token found, displaying application logged in views, page 2');
           return second;
         }
-        else{
+        else {
           console.log('JWT Token found, displaying application logged in views, page 2');
           return profile;
         }
@@ -199,7 +202,15 @@ export default class AuthDemo extends Component {
   }
 
 
+  onfacebookLogin = async () => {
+      const { type, token } = await Expo.Facebook.logInWithReadPermissionAsync('240812753750163', { permissions: ['public_profile'] })
+      if (type === 'success') {
+        console.log(token);
+      } else {
+        alert('cancel')
+      }
 
+  }
   signInWithGoogleAsync = async () => {
     try {
       const result = await Google.logInAsync({

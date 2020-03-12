@@ -160,7 +160,7 @@ export default class App extends Component {
           </Tab.Screen>
 
           <Tab.Screen
-            name="Fourth"
+            name="Profile"
             options={{
               tabBarIcon: ({ color, size }) => (
                 <Ionicons name="ios-person" color={color} size={size} />)
@@ -177,14 +177,14 @@ export default class App extends Component {
               products={this.state.products}
             />}
           </Tab.Screen>
-          <Tab.Screen
+          {/* <Tab.Screen
             name="Fifth"
             component={FifthView}
             options={{
               tabBarIcon: ({ color, size }) => (
                 <Ionicons name="ios-menu" color={color} size={size} />)
             }}
-          />
+          /> */}
         </Tab.Navigator>
       </NavigationContainer>
     );
