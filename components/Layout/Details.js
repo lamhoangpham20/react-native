@@ -17,17 +17,20 @@ export default class Details extends Component{
 		     </View>
 			 <View style={styles.forPriceandTitle}>
 		       <Text style={styles.viewText}>{item.Title}</Text>
-			  
 			 </View>
+			 <View style={styles.forWordDescription}><Text style={styles.textWordDes}>Description</Text></View>
 			 <View style={styles.forProductInfo}> 
 			   <Text style={styles.textForDes}> - {item.Description}</Text>
 			   <Text style={styles.textForDes}> - {item.Category}</Text>
 			   <Text style={styles.textForDes}> - {item.Location}</Text>
-			   <Text style={styles.textForDes}> - {item.ShippingType}</Text>
 			 </View>
+			 <View style={styles.forWordDescription2}><Text style={styles.textWordDes}>Shipping Type</Text></View>
+			 <View style={styles.forProductInfo}><Text style={styles.textForDes}> - {item.ShippingType}</Text></View>
+			 <View style={styles.forWordDescription2}><Text style={styles.textWordDes}>Date of posting</Text></View>
 			 <View style={styles.forProductInfo}>
 				 <Text style={styles.textForDes}>{item.Date}</Text>
 			 </View> 
+			 <View style={styles.forWordDescription2}><Text style={styles.textWordDes}>Price: </Text></View>
 			 <View>
 			     <Text style={styles.viewText2}>{item.Price}</Text>
 			 </View>
@@ -48,6 +51,7 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		backgroundColor:'#EBF5FB',
+		padding:5
 	},
 	view:{
 		paddingTop:30,
@@ -89,7 +93,10 @@ const styles = StyleSheet.create({
 	},
 	forWordDescription:{
 		alignItems:'flex-start',
-		marginLeft:15
+		marginLeft:15,
+	},
+	textWordDes:{
+		fontSize:20
 	},
 	viewWord:{
 		fontSize:20,
