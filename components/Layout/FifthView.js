@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-/*import { ImageBrowser } from "expo-multiple-media-imagepicker";*/
+import { ImageBrowser } from "expo-multiple-media-imagepicker";
 
 export default class FifthView extends Component {
   constructor(props) {

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, ActivityIndicator, FlatList, Image, Dimensions,
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { Ionicons } from 'react-native-vector-icons';
 import * as theme from '../../theme';
-/*import RNPickerSelect from 'react-native-picker-select';*/
+import RNPickerSelect from 'react-native-picker-select';
 const { width, height } = Dimensions.get('window');
 
 function ShowProduct(props) {
@@ -137,7 +137,7 @@ function ShowProduct(props) {
       <View style={{ height: 50, backgroundColor: 'white', flexDirection: 'row', alignItems: 'center' }}>
 
         <View style={{ marginRight: 5, marginLeft: 10 }}>
-          <Text
+          <RNPickerSelect
             onValueChange={(value) => checkBox(value)}
             placeholder={{ label: 'search by', value: 'search' }}
             items={[
