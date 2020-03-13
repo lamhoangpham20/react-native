@@ -18,6 +18,13 @@ function ShowProduct(props) {
       })
   };*/
   let products = props.products;
+  function checkSearch()
+  {
+    if(props.searchedProducts.length === 0)
+    {
+      return <View style={{marginTop: 10, alignSelf:'center'}}><Text>result not found</Text></View>
+    }
+  }
   function checkBox(text) {
     console.log(text);
     props.choseType(text);
@@ -132,7 +139,7 @@ function ShowProduct(props) {
         <View style={{ marginRight: 5, marginLeft: 10 }}>
           <RNPickerSelect
             onValueChange={(value) => checkBox(value)}
-            placeholder={{ label: 'search by', value: 'category' }}
+            placeholder={{ label: 'search by', value: 'search' }}
             items={[
               { label: 'Category', value: 'category' },
               { label: 'Location', value: 'location' },
@@ -144,12 +151,13 @@ function ShowProduct(props) {
 
         {button()}
         </View>
+        {checkSearch()}
         <FlatList data={props.searchedProducts}
         renderItem={List}
         style={{ marginTop: 10 }}
         keyExtractor={(item, index) => index.toString()}
         numColumns={2} />
-
+        
       </View>
       
 

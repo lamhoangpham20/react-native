@@ -95,7 +95,7 @@ const AddPost = (props) => {
     })
       .then(response => {
         if (response.status != 201) {
-          throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.json()));
+          throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.status));
         }
         return response.text();
       })
@@ -106,6 +106,7 @@ const AddPost = (props) => {
       .catch(error => {
         console.log("Error message:")
         console.log(error.message)
+        alert('Cannot create new post')
       });
    
 

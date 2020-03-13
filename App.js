@@ -27,7 +27,7 @@ export default class App extends Component {
       products: null,
       userLoggedin: false,
       search: "",
-      searchedProducts: null,
+      searchedProducts: [],
       searchType: 'category'
     };
   }

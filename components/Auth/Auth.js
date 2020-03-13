@@ -44,18 +44,19 @@ export default class AuthDemo extends Component {
           }
         }).then(response => {
           if (response.status == 401) {
-            this.setState({ activeJWT: null, isCheckingTokenStorage: false });
-            this.props.userLogin(null, null);
-            throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.json()));
+            throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.status));
           }
           return response.json();
         }).then(json => {
-          console.log(json.user);
+          console.log('hallo', json);
+          //console.log(json.user);
           this.setState({ user: json.user });
           this.props.userLogin(json.user, this.state.activeJWT);
         }).catch(error => {
           console.log("Error message:")
           console.log(error.message)
+          this.setState({ activeJWT: null, isCheckingTokenStorage: false });
+          this.props.userLogin(null, null);
         })
       })
 
@@ -77,10 +78,11 @@ export default class AuthDemo extends Component {
           }
         }).then(response => {
           if (response.status == 401) {
-            throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.json()));
+            throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.status));
           }
           return response.json();
         }).then(json => {
+          console.log(json);
           this.setState({ user: json.user });
           this.props.userLogin(json.user, this.state.activeJWT);
         }).catch(error => {
@@ -203,12 +205,12 @@ export default class AuthDemo extends Component {
 
 
   onfacebookLogin = async () => {
-      const { type, token } = await Expo.Facebook.logInWithReadPermissionAsync('240812753750163', { permissions: ['public_profile'] })
-      if (type === 'success') {
-        console.log(token);
-      } else {
-        alert('cancel')
-      }
+    const { type, token } = await Expo.Facebook.logInWithReadPermissionAsync('240812753750163', { permissions: ['public_profile'] })
+    if (type === 'success') {
+      console.log(token);
+    } else {
+      alert('cancel')
+    }
 
   }
   signInWithGoogleAsync = async () => {

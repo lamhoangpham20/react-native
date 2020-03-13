@@ -15,7 +15,7 @@ const LoginScreen = (props) => {
     })
       .then(response => {
         if (response.ok == false) {
-          throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.json()));
+          throw new Error("HTTP Code " + response.status + " - " + JSON.stringify(response.status));
         }
         return response.json();
       })
@@ -30,6 +30,7 @@ const LoginScreen = (props) => {
       .catch(error => {
         console.log("Error message:")
         console.log(error.message)
+        alert('Wrong username or password')
       });
   }
 
